@@ -1,5 +1,5 @@
-from telegram.news_sender_per_telegram_account import TelegramNewsSender
-from telegram.kafka_sender import NewsReader
+from telegram.raw_news_to_telegram import TelegramNewsSender
+from telegram.telegram_raw_news_to_kafka import NewsReader
 from os import environ
 import asyncio
 import logging
