@@ -47,9 +47,9 @@ class NewsReader:
         finally:
             await self.stop_producer()
 
-if __name__ == "__main__":
-    import asyncio
-    api_id = environ["API_ID"]
-    api_hash = environ["API_HASH"]
-    news_reader = NewsReader(api_id, api_hash, session_name="anas")
-    asyncio.run(news_reader.run())
+# if __name__ == "__main__":
+#     import asyncio
+#     api_id = environ["API_ID"]
+#     api_hash = environ["API_HASH"]
+#     news_reader = NewsReader(api_id, api_hash, session_name="anas")
+#     asyncio.run(news_reader.run())

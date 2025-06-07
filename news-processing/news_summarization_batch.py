@@ -1,7 +1,7 @@
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = ""  # Disable GPU
-os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"  # Disable oneDNN
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"  # Suppress TensorFlow warnings
+os.environ["CUDA_VISIBLE_DEVICES"] = ""
+os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import to_json, struct, col

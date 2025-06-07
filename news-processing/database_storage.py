@@ -30,17 +30,3 @@ class NewsDB:
     def find_after(self, timestamp: datetime):
         cursor = self.news_collection.find({"created_at": {"$gt": timestamp}})
         return list(cursor)
-
-
-
-if __name__ == "__main__":
-    news_db = NewsDB()
-    
-    # new_id = news_db.insert_news("Breaking news: Python class created!", "Programming")
-    # print(f"Inserted document with id: {new_id}")
-    fixed_time = datetime.combine(datetime.now(timezone.utc).date(), time(13, 33, tzinfo=timezone.utc))
-
-    recent_docs = news_db.find_after(fixed_time)
-
-    for doc in recent_docs:
-        print(doc)

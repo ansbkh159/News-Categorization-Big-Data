@@ -103,24 +103,24 @@ class TelegramNewsSender:
             await self.send_message_to_channel(message_text)
             # await self.send_message_to_kafka(message_text)
 
-if __name__ == "__main__":
-    import asyncio
-    try:
-        api_id = environ["API_ID"]
-        api_hash = environ["API_HASH"]
-        kafka_servers = environ["BOOTSTRAP_SERVERS"] if "BOOTSTRAP_SERVERS" in environ else "localhost:9092"  # Kafka bootstrap servers
-        sender = TelegramNewsSender(
-            api_id=api_id,
-            api_hash=api_hash,
-            session_name="anas",
-            index=20,
-            json_file_path="/var/www/html/big-data/news-dataset.json",
-            kafka_bootstrap_servers=kafka_servers
-        )
-        asyncio.run(sender.send_dataset_to_channel())
-    except KeyError as e:
-        logger.error(f"Environment variable missing: {str(e)}")
-        sys.exit(1)
-    except Exception as e:
-        logger.error(f"Error running sender: {str(e)}")
-        sys.exit(1)
+# if __name__ == "__main__":
+#     import asyncio
+#     try:
+#         api_id = environ["API_ID"]
+#         api_hash = environ["API_HASH"]
+#         kafka_servers = environ["BOOTSTRAP_SERVERS"] if "BOOTSTRAP_SERVERS" in environ else "localhost:9092"  # Kafka bootstrap servers
+#         sender = TelegramNewsSender(
+#             api_id=api_id,
+#             api_hash=api_hash,
+#             session_name="anas",
+#             index=20,
+#             json_file_path="/var/www/html/big-data/news-dataset.json",
+#             kafka_bootstrap_servers=kafka_servers
+#         )
+#         asyncio.run(sender.send_dataset_to_channel())
+#     except KeyError as e:
+#         logger.error(f"Environment variable missing: {str(e)}")
+#         sys.exit(1)
+#     except Exception as e:
+#         logger.error(f"Error running sender: {str(e)}")
+#         sys.exit(1)
