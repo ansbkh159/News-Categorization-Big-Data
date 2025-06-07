@@ -1,0 +1,9 @@
+telethon
+kafka-python
+aiokafka
+pyspark
+findspark
+transformers
+torch
+pandas
+pymongo
