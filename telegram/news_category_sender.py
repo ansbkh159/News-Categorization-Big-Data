@@ -7,7 +7,6 @@ from aiokafka import AIOKafkaConsumer
 from telethon import TelegramClient
 import sys
 
-# Set up logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
@@ -22,15 +21,14 @@ class KafkaToTelegramSender:
         self.kafka_bootstrap_servers = kafka_bootstrap_servers
         self.client = TelegramClient(self.session_name, self.api_id, self.api_hash)
         
-        # Mapping of categories to Telegram channel IDs
         self.channel_map = {
             "political": -1002543571391,
-            "environmental": -1002527026044,  # Placeholder
-            "health": -1002598764116,        # Placeholder
-            "technology": -1002695179664,    # Placeholder
-            "arts": -1002642900359,          # Placeholder
-            "sports": -1002389263475,        # Placeholder
-            "social": -1002565151711         # Placeholder
+            "environmental": -1002527026044,
+            "health": -1002598764116,
+            "technology": -1002695179664,
+            "arts": -1002642900359,
+            "sports": -1002389263475,
+            "social": -1002565151711
         }
         self.categories = ["environmental", "health", "technology", "political", "arts", "sports", "social"]
 
@@ -56,12 +54,10 @@ class KafkaToTelegramSender:
             logger.info(f"Started consuming from Kafka topic: {self.kafka_topic}")
             while True:
                 try:
-                    # Fetch messages with a short timeout
                     messages = await consumer.getmany(timeout_ms=1000)
                     for topic_partition, msgs in messages.items():
                         for msg in msgs:
                             try:
-                                # Decode and parse the Kafka message
                                 message = msg.value.decode('utf-8')
                                 data = json.loads(message)
                                 category = data.get('col2', '').lower()
@@ -80,7 +76,6 @@ class KafkaToTelegramSender:
                                     logger.error(f"No channel ID mapped for category '{category}'. Skipping...")
                                     continue
 
-                                # Send to the appropriate Telegram channel
                                 await self.send_to_telegram(message_text, channel_id)
 
                             except json.JSONDecodeError as je:
@@ -88,12 +83,11 @@ class KafkaToTelegramSender:
                             except Exception as e:
                                 logger.error(f"Error processing Kafka message: {str(e)}")
                     
-                    # Wait for 5 seconds before the next poll
                     await asyncio.sleep(5)
 
                 except Exception as e:
                     logger.error(f"Error during Kafka polling: {str(e)}")
-                    await asyncio.sleep(5)  # Wait before retrying on error
+                    await asyncio.sleep(5)
 
         except Exception as e:
             logger.error(f"Error in Kafka consumer: {str(e)}")

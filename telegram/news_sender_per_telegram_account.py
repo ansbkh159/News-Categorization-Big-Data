@@ -17,9 +17,9 @@ class TelegramNewsSender:
         self.api_id = api_id
         self.api_hash = api_hash
         self.session_name = session_name
-        self.channel_username = -1002326731921  # Telegram channel ID
-        self.json_file_path = json_file_path  # Path to JSON dataset
-        self.index = index  # Start index for processing
+        self.channel_username = -1002326731921
+        self.json_file_path = json_file_path
+        self.index = index 
         self.kafka_producer = None
         if kafka_bootstrap_servers:
             try:
@@ -58,16 +58,13 @@ class TelegramNewsSender:
                 for i, article in enumerate(data):
                     if i < self.index:
                         continue
-                    # Ensure required fields exist
                     headline = article.get('headline', '')
                     authors = article.get('authors', '')
                     short_description = article.get('short_description', '')
-                    # Handle authors as string or list
                     if isinstance(authors, list):
                         authors = ', '.join(authors) if authors else 'Unknown'
                     else:
                         authors = authors or 'Unknown'
-                    # Concatenate fields
                     concatenated_text = (
                         f"Headline: {headline}, "
                         f"Authors: {authors}, "
