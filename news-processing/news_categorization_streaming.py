@@ -126,3 +126,10 @@ except KeyboardInterrupt:
     query.stop()
     spark.stop()
     logger.info("Spark session stopped gracefully")
+
+# # RUN WITH 
+
+# spark-submit \
+#   --master local[4] \
+#   --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.3.2 \
+#   news_categorization_streaming.py

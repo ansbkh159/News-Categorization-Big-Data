@@ -6,7 +6,6 @@ from dotenv import load_dotenv
 import logging
 import sys
 
-# Set up logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
@@ -33,10 +32,8 @@ class TelegramNewsSender:
                 self.kafka_producer = None
 
     def read_dataset_content(self):
-        """Read JSON dataset (array or JSON Lines) and filter out financial articles."""
         try:
             with open(self.json_file_path, 'r', encoding='utf-8') as file:
-                # Try loading as a JSON array
                 try:
                     data = json.load(file)
                     if not isinstance(data, list):
@@ -44,7 +41,7 @@ class TelegramNewsSender:
                         sys.exit(1)
                 except json.JSONDecodeError as e:
                     logger.warning(f"Failed to load as JSON array: {str(e)}. Trying JSON Lines format...")
-                    file.seek(0)  # Reset file pointer
+                    file.seek(0)
                     data = []
                     for line_num, line in enumerate(file, 1):
                         line = line.strip()
@@ -79,7 +76,6 @@ class TelegramNewsSender:
             sys.exit(1)
 
     async def send_message_to_channel(self, message_text):
-        """Send a message to the Telegram channel."""
         try:
             async with TelegramClient(self.session_name, self.api_id, self.api_hash) as client:
                 await client.send_message(entity=self.channel_username, message=message_text)
@@ -88,7 +84,6 @@ class TelegramNewsSender:
             logger.error(f"Failed to send message to Telegram: {str(e)}")
 
     async def send_message_to_kafka(self, message_text):
-        """Send a message to Kafka general-news-2 topic."""
         if self.kafka_producer:
             try:
                 self.kafka_producer.send("general-news-2", value=message_text)
@@ -98,7 +93,6 @@ class TelegramNewsSender:
                 logger.error(f"Failed to send message to Kafka: {str(e)}")
 
     async def send_dataset_to_channel(self):
-        """Process and send dataset articles to Telegram and Kafka."""
         for message_text in self.read_dataset_content():
             await self.send_message_to_channel(message_text)
             # await self.send_message_to_kafka(message_text)
